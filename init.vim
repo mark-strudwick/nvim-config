@@ -24,13 +24,24 @@ call plug#begin()
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'preservim/nerdtree'
 
 Plug 'gruvbox-community/gruvbox'
-Plug 'puremourning/vimspector'
-Plug 'szw/vim-maximizer'
 call plug#end()
 
 colorscheme gruvbox
 
 let mapleader = " "
 nnoremap <leader>fs :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
+
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+augroup MY_AUTO_GROUP
+    autocmd!
+    autocmd BufWritePre * :call TrimWhitespace()
+augroup END
